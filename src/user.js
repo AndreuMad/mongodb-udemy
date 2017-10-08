@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const UserModelName = require('./constants/modelNames').UserModelName;
+const BlogPostModelName = require('./constants/modelNames').BlogPostModelName;
+
 const PostSchema = require('./post');
 
 const UserSchema = new Schema({
@@ -13,13 +16,17 @@ const UserSchema = new Schema({
         required: [true, 'Name is required']
     },
     posts: [PostSchema],
-    likes: Number
+    likes: Number,
+    blogPosts: [{
+        type: Schema.Types.ObjectId,
+        ref: BlogPostModelName
+    }]
 });
 
 UserSchema.virtual('postCount').get(function() {
     return this.posts.length;
 });
 
-const User = mongoose.model('user', UserSchema);
+const User = mongoose.model(UserModelName, UserSchema);
 
 module.exports = User;
