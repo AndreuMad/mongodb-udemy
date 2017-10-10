@@ -48,6 +48,16 @@ describe('Reading users out of the database', () => {
     });
 
     it('Can skip and limit the result set', (done) => {
-        done();
+        User.find({})
+            .sort({ name: 1 })
+            .skip(1)
+            .limit(2)
+            .then((users) => {
+            console.log(users);
+                assert(users.length === 2);
+                assert(users[0].name === 'Joe');
+                assert(users[1].name === 'Mary');
+                done();
+            });
     });
 });
